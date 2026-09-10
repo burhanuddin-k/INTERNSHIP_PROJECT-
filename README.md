@@ -97,7 +97,7 @@ Logged into the Dev-Account console and attempted to launch a large EC2 instance
 
 > `User: ...assumed-role/OrganizationAccountAccessRole/org-admin is not authorized to perform: ec2:RunInstances ... with an explicit deny in a service control policy: arn:aws:organizations::...:policy/o-s4obcjcl4x/service_control_policy/p-sc54wtt0`
 
-<img width="1892" height="853" alt="10" src="https://github.com/user-attachments/assets/e62b7a8e-6d35-43b4-bcce-62a440d382f5" />
+<img width="1917" height="856" alt="11" src="https://github.com/user-attachments/assets/ce11da1c-6a03-4e5b-beb9-cbc762809509" />
 
 
 ### 6. Author SCP #2 — Protect CloudTrail (`ProtectCloudTrail`)
