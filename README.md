@@ -147,57 +147,74 @@ Also confirmed that even a read-only action like `ec2:DescribeInstances` is bloc
 
 <img width="1895" height="807" alt="Screenshot 2026-09-11 010816" src="https://github.com/user-attachments/assets/2b1f09be-7339-4f20-9115-1bba4e194604" />
 
-
----
-
-## ✅ Results & Key Learnings
-
-| Guardrail | SCP Name | Validation Result |
-|---|---|---|
-| Block large/expensive EC2 instance types in Dev | `DenyLargeEC2InDev` | ❌ `ec2:RunInstances` explicitly denied |
-| Prevent accounts from leaving the org / self-closing | `DenyLeaveAndCloseAccount` | Attached at Root — protects org integrity |
-| Prevent tampering with audit logs | `ProtectCloudTrail` | ❌ `cloudtrail:StopLogging` explicitly denied |
-| Restrict usage to approved AWS regions | `RestrictAWSRegions` | Attached at Root — confines account activity |
-
-**Key takeaways from this project:**
-1. **SCPs are preventive, not permissive** — they never grant access; they only set the *maximum* boundary. IAM permissions still have to be granted separately.
-2. **Explicit Deny always wins** — even an account's own Administrator/root-equivalent role (`OrganizationAccountAccessRole`) cannot override an SCP deny.
-3. **Centralized governance scales** — a handful of policies attached at the Root/OU level enforced cost, security, and compliance guardrails across every current and future account in the DEV OU without touching each account individually.
-4. **Error messages are actionable** — AWS surfaces the exact policy ARN responsible for a denial, which makes auditing and troubleshooting SCPs straightforward.
-
----
-
-## 📂 Repository Structure
-
-```
-.
-├── README.md
-└── images/
-    ├── 2.png   → OU structure (Root / DEV / PROD / TEST)
-    ├── 3.png   → Failed account creation (EMAIL_ALREADY_EXISTS)
-    ├── 4.png   → Dev-Account created under DEV OU
-    ├── 5.png   → Creating DenyLargeEC2InDev policy
-    ├── 6.png   → DenyLargeEC2InDev JSON
-    ├── 7.png   → Attaching DenyLargeEC2InDev
-    ├── 8.png   → Applied policies on Dev-Account
-    ├── 9.png   → Dev-Account details
-    ├── 10.png  → Dev-Account console home
-    ├── 11.png  → EC2 launch denied by SCP
-    ├── 12.png  → ProtectCloudTrail policy created
-    ├── project-1.png → AWS Organizations landing page
-    ├── Screenshot_2026-09-11_003007.png → Attach ProtectCloudTrail
-    ├── Screenshot_2026-09-11_003257.png → RestrictAWSRegions created
-    ├── Screenshot_2026-09-11_003400.png → Attach RestrictAWSRegions
-    ├── Screenshot_2026-09-11_005701.png → CloudTrail trail list
-    ├── Screenshot_2026-09-11_005856.png → Selecting test trail
-    ├── Screenshot_2026-09-11_010008.png → Stop logging denied
-    └── Screenshot_2026-09-11_010816.png → DescribeInstances denied
-```
-
----
-
 ## 🎓 Conclusion
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-This project simulates a real-world **enterprise landing zone** governance pattern: a management account defining organization-wide guardrails via SCPs, with member accounts (Dev/Prod/Test) inheriting those restrictions automatically. It highlights core DevOps/Cloud principles of **least privilege**, **policy-as-code**, and **defense in depth** in a multi-account AWS environment.
+# Centralized CI/CD Platform Setup for Multiple Applications using Shared Jenkins Infrastructure
 
-*Submitted as part of the DevOps & AWS institute coursework.*
+## Project 2 – Internship Project Set 8
+
+## Objective
+
+Build a centralized Jenkins CI/CD platform that supports multiple applications using:
+
+- Jenkins on AWS EC2
+- Jenkins Agents
+- Jenkins Shared Library
+- Standard Build, Test, Scan and Deploy stages
+- Multiple applications
+- Credential management
+- Role-based access control
+
+---
+
+## 1. Jenkins Infrastructure
+
+Jenkins is deployed on an AWS EC2 instance and is used as the central CI/CD server.
+
+![Jenkins Controller EC2](screenshots/01-jenkins-controller-ec2.png)
+
+A separate EC2 instance was created for the Jenkins agent.
+
+![Jenkins Agent EC2](screenshots/02-jenkins-agent-ec2.png)
+
+The agent environment contains Docker and Git.
+
+![Agent Docker and Git](screenshots/20-agent-docker-git-environment.png)
+
+The Jenkins node configuration is shown below.
+
+![Jenkins Nodes](screenshots/21-jenkins-nodes.png)
+
+---
+
+## 2. Docker
+
+Docker is installed on the Jenkins infrastructure and is used for the application container workflow.
+
+![Docker Installation](screenshots/03-docker-controller.png)
+
+Docker containers can be checked from the Jenkins environment.
+
+![Docker Containers](screenshots/04-docker-container-check.png)
+
+---
+
+## 3. Jenkins Shared Library
+
+A separate GitHub repository was created for the Jenkins Shared Library.
+
+Repository:
+
+`jenkins-shared-library`
+
+![Jenkins Shared Library](screenshots/05-shared-library-repository.png)
+
+The shared library is configured in Jenkins as a Global Trusted Pipeline Library.
+
+![Global Shared Library Configuration](screenshots/10-global-shared-library-config.png)
+
+The applications load the library using:
+
+```groovy
+@Library('jenkins-shared-library') _
