@@ -85,8 +85,7 @@ Confirmed via the account's **Policies** tab that 6 policies were now applied (d
 
 Account details for reference:
 
-![Dev-Account details](<img width="1440" height="746" alt="9" src="https://github.com/user-attachments/assets/9d7ad4bf-21a5-4ac5-9158-303f8e91b33b" />
-)
+<img width="1440" height="746" alt="9" src="https://github.com/user-attachments/assets/9d7ad4bf-21a5-4ac5-9158-303f8e91b33b" />
 
 ### 5. Validate SCP #1 — Launch a Large EC2 Instance (Expected: Denied)
 Logged into the Dev-Account console and attempted to launch a large EC2 instance.
@@ -150,6 +149,7 @@ Also confirmed that even a read-only action like `ec2:DescribeInstances` is bloc
 
 ## 🎓 Conclusion
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # Centralized CI/CD Platform Setup for Multiple Applications using Shared Jenkins Infrastructure
 
 ## Project 2 – Internship Project Set 8
@@ -164,61 +164,54 @@ In this project I set up Jenkins on an AWS EC2 instance and created a separate G
 
 ### Jenkins controller
 
-Jenkins runs on an EC2 instance named `Project-2` in the Europe (Stockholm) region. The instance type is `c7i-flex.large` and it is in the Running state. The Jenkins page in my browser uses `13.48.196.145:8080`, which is the public IP of this instance.
+Jenkins runs on an EC2 instance named `Project-2` in the Europe (Stockholm) region. The instance type is `c7i-flex.large` and it is in the Running state. Jenkins is opened in the browser at `13.48.196.145:8080`, which is the public IP of this instance. The Jenkins version shown at the bottom of the pages is 2.568.3.
 
-![Jenkins controller EC2 instance](images/ec2-jenkins-controller.png)
+<img width="1917" height="848" alt="project -2_1" src="https://github.com/user-attachments/assets/59e2d301-3edd-459a-a03d-ce18165b3b93" />
+
 
 This is the Jenkins home page after setup:
 
-![Jenkins welcome page](images/jenkins-welcome-page.png)
+<img width="1917" height="917" alt="ss-7" src="https://github.com/user-attachments/assets/24a93ed0-42d0-4344-b876-7f0744cf713d" />
+
 
 ### Jenkins agent EC2
 
-I created a second EC2 instance named `project-2-jenkins-agent` for the agent. The instance type is `t3.small` and it is in the Running state.
+I created a second EC2 instance named `project-2-jenkins-agent` for the Jenkins agent. The instance type is `t3.small` and it is in the Running state.
 
-![Jenkins agent EC2 instance](images/ec2-jenkins-agent.png)
-
-On this instance I checked that Docker and Git are installed. `docker --version` shows Docker version 29.1.3, `git --version` shows git version 2.53.0, and `docker ps` runs without errors (no containers running).
-
-![Docker and Git on the agent](images/agent-docker-git-version.png)
-
-## Jenkins Node
-
-A separate Jenkins node was configured on an AWS EC2 instance to support the Jenkins infrastructure.
+<img width="1916" height="902" alt="ss-24" src="https://github.com/user-attachments/assets/690242f7-7d89-473d-b5a2-9e2862449d05" />
 
 
-![Jenkins Nodes page](images/jenkins-nodes-agent-na.png)
+On this instance Docker and Git are installed. `docker --version` shows Docker version 29.1.3 and `git --version` shows git version 2.53.0.
 
-The node is configured with the required connection and execution settings in Jenkins.
+<img width="1278" height="172" alt="ss-22" src="https://github.com/user-attachments/assets/eafc333b-3394-4b86-a847-0de548ecab4c" />
+
+
 ---
 
 ## 2. Docker
 
-Docker is installed on the Jenkins controller instance (`ip-172-31-11-248`). These are the steps visible in my terminal:
+Docker is installed on the Jenkins controller instance (`ip-172-31-11-248`). In the terminal I enabled and started the Docker service, checked the version (Docker version 29.1.3), and checked the service status. `sudo systemctl status docker` shows `docker.service` as active (running).
 
-- `sudo systemctl enable docker` and `sudo systemctl start docker`
-- `docker --version` shows Docker version 29.1.3
-- `docker ps` first gave a permission denied error on `/var/run/docker.sock`
-- I ran `sudo usermod -aG docker jenkins`, but `docker ps` still gave the same error in that session
-- `sudo systemctl status docker` shows `docker.service` as active (running)
+<img width="1906" height="948" alt="ss 2" src="https://github.com/user-attachments/assets/cdd7a87a-b37a-4665-904f-0b5fef15ab4d" />
 
-![Docker install and permission error on controller](images/docker-install-controller.png)
 
-Then I ran `sudo usermod -aG docker $USER` and `newgrp docker`. After that `docker ps` worked and showed an empty container list.
+I also added my user to the `docker` group (`sudo usermod -aG docker $USER` and `newgrp docker`), and `docker ps` then runs on the instance.
 
-![Docker permission fixed](images/docker-permission-fix.png)
+<img width="948" height="267" alt="ss-3" src="https://github.com/user-attachments/assets/405bcd6f-2db1-40c6-b2d1-15252bb5bc23" />
 
-The `docker image prune -f || true` command that shows up in the pipeline post actions (section 7) also uses Docker.
+
+Docker is also used in the pipeline. The Post Actions stage runs `docker image prune -f || true` (shown in section 7).
 
 ---
 
 ## 3. Jenkins Shared Library
 
-I created a separate private GitHub repository called `jenkins-shared-library` (branch `main`). It has a `vars` folder and a `README.md`. The latest commit message is "Add standardized shared pipeline". The README in the repo says it is the centralized Jenkins shared library for Internship Project 2 and that every application uses the same four stages. 
+I created a separate private GitHub repository called `jenkins-shared-library` (branch `main`). It has a `vars` folder and a `README.md`. The latest commit message is "Add standardized shared pipeline". The README in the repo says it is the centralized Jenkins shared library for Internship Project 2 and that it standardizes the CI/CD pipeline used by multiple applications.
 
-![Jenkins shared library GitHub repository](images/github-jenkins-shared-library.png)
+<img width="1892" height="902" alt="ss-4" src="https://github.com/user-attachments/assets/33eaf6eb-e693-4a58-93e8-c1eab21dea26" />
 
-The library is added in Jenkins under Manage Jenkins → System. The screenshot shows:
+
+The library is added in Jenkins under Manage Jenkins → System. The configuration shows:
 
 - Retrieval method: Modern SCM
 - Source Code Management: Git
@@ -226,14 +219,12 @@ The library is added in Jenkins under Manage Jenkins → System. The screenshot 
 - Credentials: `burhanuddin-k/****** (project-2)`
 - Behaviours: Discover branches
 - "Allow default version to be overridden" and "Include @Library changes in job recent changes" are checked
-- "Load implicitly" is not checked
-- It currently maps to revision `e7e50a0f09293cb96aa2bf9ff6aa8a58a847d133`, which matches the `e7e50a0` commit shown in the GitHub repo
+- The library maps to revision `e7e50a0f09293cb96aa2bf9ff6aa8a58a847d133`, which matches the `e7e50a0` commit in the GitHub repo
 
-The top of this section is cut off in my screenshot, so the library name field and the "Global Trusted Pipeline Libraries" heading are not visible in it. The library name used in the Jenkinsfiles is `jenkins-shared-library`.
+<img width="1897" height="898" alt="ss-12" src="https://github.com/user-attachments/assets/f46be2e6-d56a-484a-91c5-7bed82643adc" />
 
-![Global Pipeline Library configuration in Jenkins](images/jenkins-global-library-config.png)
 
-Both applications call the shared pipeline like this:
+The library name used in the Jenkinsfiles is `jenkins-shared-library`. Both applications call the shared pipeline like this:
 
 ```groovy
 @Library('jenkins-shared-library') _
@@ -246,7 +237,7 @@ standardPipeline(
 )
 ```
 
-The stages shown in the successful pipeline runs (section 7) are Build, Test, Scan and Deploy. There is also a Post Actions stage after them. I did not open the files inside the `vars` folder in my screenshots, so the code of the shared library is not shown here.
+The stages run by the shared pipeline are Build, Test, Scan and Deploy, followed by Post Actions (shown in section 7).
 
 ---
 
@@ -254,7 +245,8 @@ The stages shown in the successful pipeline runs (section 7) are Build, Test, Sc
 
 The repository is `sample-app-1` (private, branch `main`). According to its README it is a sample Flask application. The files are `Dockerfile`, `Jenkinsfile`, `README.md`, `app.py`, `requirements.txt` and `test_app.py`.
 
-![sample-app-1 GitHub repository](images/github-sample-app-1-repo.png)
+<img width="1895" height="911" alt="ss-5" src="https://github.com/user-attachments/assets/fe24720c-ac3b-4e60-b9f3-58bd422fd15f" />
+
 
 Jenkinsfile:
 
@@ -269,7 +261,8 @@ standardPipeline(
 )
 ```
 
-![sample-app-1 Jenkinsfile](images/sample-app-1-jenkinsfile.png)
+<img width="1895" height="907" alt="ss-6" src="https://github.com/user-attachments/assets/11941704-f88d-46fd-964b-1059730fa010" />
+
 
 The Jenkinsfile loads `jenkins-shared-library` and calls `standardPipeline` with the app name, test command and ports. The test command is `pytest -q`.
 
@@ -279,7 +272,8 @@ The Jenkinsfile loads `jenkins-shared-library` and calls `standardPipeline` with
 
 The repository is `sample-app-2` (private, branch `main`). According to its README it is a sample Node.js application. The files are `Dockerfile`, `Jenkinsfile`, `README.md`, `app.js`, `app.test.js` and `package.json`.
 
-![sample-app-2 GitHub repository](images/github-sample-app-2-repo.png)
+<img width="1895" height="907" alt="ss-6" src="https://github.com/user-attachments/assets/c6aaac1c-75a0-4e33-b500-95b52029253e" />
+
 
 Jenkinsfile:
 
@@ -294,7 +288,8 @@ standardPipeline(
 )
 ```
 
-![sample-app-2 Jenkinsfile](images/sample-app-2-jenkinsfile.png)
+<img width="1897" height="872" alt="ss-19" src="https://github.com/user-attachments/assets/28ef1bc1-8c47-4508-9c77-616264da6eef" />
+
 
 This Jenkinsfile loads the same `jenkins-shared-library` and calls the same `standardPipeline`. Only the values are different (app name, `npm test`, and the ports).
 
@@ -309,11 +304,11 @@ Both applications use the same shared library and the same `standardPipeline` ca
 | sample-app-1 | jenkins-shared-library | `pytest -q` | 5001 | 5000 |
 | sample-app-2 | jenkins-shared-library | `npm test` | 5002 | 3000 |
 
-Pipeline structure (as seen in both pipeline runs in section 7):
+Pipeline structure:
 
 Build → Test → Scan → Deploy
 
-In both runs all four stages are green, followed by a Post Actions stage that is also green.
+Both pipeline runs in section 7 show these four stages completed successfully, followed by a Post Actions stage.
 
 ---
 
@@ -321,41 +316,45 @@ In both runs all four stages are green, followed by a Post Actions stage that is
 
 ### Jenkins dashboard
 
-The dashboard shows both jobs, `sample-app-1` and `sample-app-2`. `sample-app-1` has last success #2 and last failure #1, so build #1 failed before #2 passed. `sample-app-2` has last success #3 and last failure N/A.
+The dashboard shows both jobs, `sample-app-1` and `sample-app-2`, each with a successful last build.
 
-![Jenkins dashboard with both jobs](images/jenkins-dashboard-both-jobs.png)
+<img width="1916" height="907" alt="ss9" src="https://github.com/user-attachments/assets/0b869ec5-cb9d-4681-894b-ec5ea6b07111" />
+
 
 ### sample-app-1
 
-Build #2 of `sample-app-1` was started by Admin and took 18 sec. The stage view shows Build (10s), Test (0.79s), Scan (0.32s) and Deploy (0.31s) all successful, then Post Actions (0.37s). The Post Actions stage ran `docker image prune -f || true` and printed "Standard pipeline completed successfully for sample-app-1."
+Build #2 of `sample-app-1` was started by Admin and took 18 sec. The stage view shows Build (10s), Test (0.79s), Scan (0.32s) and Deploy (0.31s) all successful, then Post Actions (0.37s). Post Actions ran `docker image prune -f || true` and printed "Standard pipeline completed successfully for sample-app-1."
 
-![sample-app-1 pipeline run #2](images/jenkins-pipeline-sample-app-1.png)
+<img width="1916" height="901" alt="ss-20" src="https://github.com/user-attachments/assets/c560f45f-c754-4f30-a08f-03b2e8b7a582" />
+
 
 ### sample-app-2
 
 Build #3 of `sample-app-2` was started by Admin and took 8.8 sec. The stage view shows Build (3s), Test (1s), Scan (0.3s) and Deploy (0.55s) all successful, then Post Actions (0.33s). It printed "Standard pipeline completed successfully for sample-app-2."
 
-![sample-app-2 pipeline run #3](images/jenkins-pipeline-sample-app-2.png)
+<img width="1917" height="900" alt="ss-21" src="https://github.com/user-attachments/assets/8da8f3fc-6c83-4f1b-9321-fa12ccea531e" />
 
-Both runs show "Started by Admin", so these were started from Jenkins by the Admin user.
 
 ---
 
 ## 8. GitHub Webhooks
 
-I added a webhook in the settings of both `sample-app-1` and `sample-app-2`. In both repos the webhook points to `http://13.48.196.145:8080/github-w...` (the URL is cut off in the screenshot) and is set for the `push` event. GitHub shows "Last delivery was successful." for both. In the `sample-app-1` screenshot GitHub also shows the message that the hook was created and a ping was sent.
+I added a webhook in the settings of both `sample-app-1` and `sample-app-2`. In both repos the webhook points to `http://13.48.196.145:8080/github-w...` (the URL is cut off in the screenshot) and is set for the `push` event. GitHub shows "Last delivery was successful." for both. In the `sample-app-1` screenshot GitHub also shows that the hook was created and a ping was sent.
 
-![sample-app-1 webhook](images/github-webhook-sample-app-1.png)
+<img width="1887" height="842" alt="ss-10" src="https://github.com/user-attachments/assets/86f626ef-7088-4d3f-9976-f1563789565f" />
 
-![sample-app-2 webhook](images/github-webhook-sample-app-2.png)
+
+<img width="1905" height="783" alt="ss-11" src="https://github.com/user-attachments/assets/e34338d4-9ba5-4c6b-86af-31b0c8658cea" />
+
 
 ---
 
 ## 9. Credential Management
 
-In the shared library configuration (section 3), the Credentials field is set to `burhanuddin-k/****** (project-2)`. The secret is masked in the screenshot. This credential is used by Jenkins when it fetches `jenkins-shared-library` from GitHub (the repository is private).
+In the shared library configuration, the Credentials field is set to `burhanuddin-k/****** (project-2)`. The secret is masked in the screenshot. Jenkins uses this credential to fetch `jenkins-shared-library` from the private GitHub repository.
 
-![Credentials selected in shared library configuration](images/jenkins-library-credentials.png)
+<img width="1897" height="898" alt="ss-12" src="https://github.com/user-attachments/assets/4f6a3e15-bb53-41f6-b502-708f52732ad8" />
+
 
 ---
 
@@ -365,7 +364,8 @@ In the shared library configuration (section 3), the Credentials field is set to
 
 In Manage Jenkins → Security, the Security Realm is "Jenkins' own user database" with "Allow users to sign up" unchecked. Authorization is set to "Role-Based Strategy".
 
-![Jenkins security configuration](images/jenkins-security-role-based.png)
+<img width="1917" height="907" alt="ss-13" src="https://github.com/user-attachments/assets/364a4232-bb97-43df-bcd9-c5e71f309b83" />
+
 
 ### Users
 
@@ -376,29 +376,32 @@ There are 2 users in Jenkins' user database:
 | Develepor | Developer |
 | project-2 | Admin |
 
-The username is spelled `Develepor` in Jenkins (that is how it appears in the screenshot).
+<img width="1917" height="902" alt="ss-14" src="https://github.com/user-attachments/assets/f5bf93d1-2e15-4ee2-b536-7948d41fb981" />
 
-![Jenkins users](images/jenkins-users.png)
 
 ### Roles
 
-Under Role Management → Manage Roles, two global roles exist:
+Under Role Management → Manage Roles, two global roles are created:
 
 | Role | Permissions shown |
 |---|---|
 | admin | Overall/Administer |
 | Developer | Agent/Build, Job/Workspace, Overall/Read |
 
-![Jenkins global roles](images/jenkins-global-roles.png)
+<img width="751" height="963" alt="ss-16" src="https://github.com/user-attachments/assets/494ead2e-4e0f-4db0-a671-56c5bcb673e0" />
+
 
 ### Role assignments
 
-Role assignment page with only the `admin` role created.
-![Role assignment with admin role](images/jenkins-role-assignment-admin.png)
+The role assignment page with the `admin` role. The `Admin` user has the `admin` role checked.
 
-Role assignment page after the `Developer` role was added.
+<img width="1902" height="902" alt="ss-15" src="https://github.com/user-attachments/assets/63942ba8-8b62-436e-bab2-53de7110e181" />
 
-![Role assignment with Developer and admin roles](images/jenkins-role-assignment-developer-admin.png)
+
+The role assignment page after the `Developer` role was added, showing both the `Developer` and `admin` roles.
+
+<img width="1917" height="906" alt="ss-17" src="https://github.com/user-attachments/assets/79dc212e-1e08-440c-8a72-84615a95992e" />
+
 
 ---
 
@@ -407,7 +410,7 @@ Role assignment page after the `Developer` role was added.
 - Jenkins Shared Library: `jenkins-shared-library` GitHub repository, configured in Jenkins
 - Application 1: `sample-app-1`
 - Application 2: `sample-app-2`
-- Jenkins pipelines: `sample-app-1` (#2) and `sample-app-2` (#3), both with Build, Test, Scan and Deploy green
+- Jenkins pipelines: `sample-app-1` (#2) and `sample-app-2` (#3), both with Build, Test, Scan and Deploy successful
 - Role-based access: Admin and Developer roles (Role-Based Strategy)
 - GitHub integration: private repos, shared library over Git, push webhooks on both apps
 - README (this file)
@@ -415,3 +418,5 @@ Role assignment page after the `Developer` role was added.
 ---
 
 ## Conclusion
+
+I set up Jenkins on an EC2 instance with Docker, created a shared library repo, and onboarded two sample apps that both use `standardPipeline` from it. Both pipelines completed the Build, Test, Scan and Deploy stages. I also configured GitHub webhooks and role-based access with Admin and Developer roles.
