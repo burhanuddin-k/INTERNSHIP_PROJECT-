@@ -450,7 +450,8 @@ Project-3/
 ## Step 1: Prepare the Docker Application
 The `docker-app` directory contains the Docker build instructions and the HTML file used by the sample application.
 
-![2.png](Project-3/screenshots/2.png)
+<img width="1245" height="301" alt="2" src="https://github.com/user-attachments/assets/728eaaff-1984-42ad-bb57-51b8716545a7" />
+
 
 ## Step 2: Authenticate Docker with Amazon ECR
 The AWS CLI was used to retrieve an authentication token and log in to the private ECR registry.
@@ -459,7 +460,8 @@ The AWS CLI was used to retrieve an authentication token and log in to the priva
 aws ecr get-login-password --region eu-north-1 --profile project3 | docker login --username AWS --password-stdin 225874124228.dkr.ecr.eu-north-1.amazonaws.com
 ```
 
-![3.png](Project-3/screenshots/3.png)
+<img width="1917" height="203" alt="3" src="https://github.com/user-attachments/assets/77f6b51b-6260-4300-ad3a-03a60b5d3f00" />
+
 
 ## Step 3: Check Local Docker Images
 The local Docker image list was checked before pushing images to ECR.
@@ -468,7 +470,8 @@ The local Docker image list was checked before pushing images to ECR.
 docker images
 ```
 
-![4.png](Project-3/screenshots/4.png)
+<img width="1905" height="211" alt="4" src="https://github.com/user-attachments/assets/d896f417-294e-4854-833c-252cb62cceda" />
+
 
 ## Step 4: Push the Docker Image to ECR
 The Docker image was pushed to the private repository.
@@ -477,7 +480,8 @@ The Docker image was pushed to the private repository.
 docker push 225874124228.dkr.ecr.eu-north-1.amazonaws.com/burhanuddin-private-registry:v1
 ```
 
-![5.png](Project-3/screenshots/5.png)
+<img width="1587" height="355" alt="5" src="https://github.com/user-attachments/assets/f75c891c-48c0-4f7d-9c4f-e8c4fed1e1e6" />
+
 
 ## Step 5: Verify Images in ECR
 The AWS CLI was used to inspect the image details stored in the repository.
@@ -486,7 +490,9 @@ The AWS CLI was used to inspect the image details stored in the repository.
 aws ecr describe-images --repository-name burhanuddin-private-registry --region eu-north-1 --profile project3
 ```
 
-![6.png](Project-3/screenshots/6.png)
+
+<img width="1827" height="931" alt="6" src="https://github.com/user-attachments/assets/b13e612d-b4c3-47fa-a0a7-ac3eede90441" />
+
 
 ## Step 6: Tag and Push Additional Versions
 Additional Docker image versions were tagged and pushed to the repository.
@@ -496,7 +502,8 @@ docker tag burhanuddin-app:v3 225874124228.dkr.ecr.eu-north-1.amazonaws.com/burh
 docker push 225874124228.dkr.ecr.eu-north-1.amazonaws.com/burhanuddin-private-registry:v3
 ```
 
-![7.png](Project-3/screenshots/7.png)
+<img width="1801" height="380" alt="7" src="https://github.com/user-attachments/assets/c7368b61-41ce-4f1a-bffb-9d211b87be7f" />
+
 
 The CLI output confirms the image tags and statuses.
 
@@ -504,18 +511,21 @@ The CLI output confirms the image tags and statuses.
 aws ecr describe-images --repository-name burhanuddin-private-registry --region eu-north-1 --profile project3 --query "imageDetails[?imageTags!=null].[imageTags[0],imagePushedAt,imageStatus]" --output table
 ```
 
-![8.png](Project-3/screenshots/8.png)
+<img width="1902" height="261" alt="8" src="https://github.com/user-attachments/assets/cb01bf17-3d09-49b6-ae8a-ea1de495f6f9" />
+
 
 ## Step 7: Configure the Lifecycle Policy
 A lifecycle policy was created to retain the latest three tagged images matching the `v*` pattern.
 
 Policy file: `policies/lifecycle-policy.json`
 
-![9.png](Project-3/screenshots/9.png)
+<img width="1345" height="187" alt="9" src="https://github.com/user-attachments/assets/082a2177-60cc-4f24-afee-3c82c84eba00" />
+
 
 The policy was previewed and then applied to the repository.
 
-![10.png](Project-3/screenshots/10.png)
+<img width="1902" height="825" alt="10" src="https://github.com/user-attachments/assets/4545ce20-db04-45a6-ad19-9949b43a9211" />
+
 
 The lifecycle policy was checked after it was applied.
 
@@ -523,7 +533,8 @@ The lifecycle policy was checked after it was applied.
 aws ecr get-lifecycle-policy --repository-name burhanuddin-private-registry --region eu-north-1 --profile project3
 ```
 
-![11.png](Project-3/screenshots/11.png)
+<img width="1907" height="252" alt="11" src="https://github.com/user-attachments/assets/afdf5e8a-3af5-41ba-9f40-1aef4031ce08" />
+
 
 ## Step 8: Configure the Repository Policy
 A repository policy was applied for the `Project3-ECR-User` IAM user, using the permissions defined in `policies/repository-policy.json`.
@@ -532,7 +543,8 @@ A repository policy was applied for the `Project3-ECR-User` IAM user, using the 
 aws ecr set-repository-policy --repository-name burhanuddin-private-registry --policy-text file://policies/repository-policy.json --region eu-north-1 --profile project3
 ```
 
-![12.png](Project-3/screenshots/12.png)
+<img width="1901" height="285" alt="12" src="https://github.com/user-attachments/assets/baab7727-72e3-4ef9-8311-418baa586a9d" />
+
 
 The policy was retrieved to verify its configuration.
 
@@ -540,7 +552,8 @@ The policy was retrieved to verify its configuration.
 aws ecr get-repository-policy --repository-name burhanuddin-private-registry --region eu-north-1 --profile project3
 ```
 
-![13.png](Project-3/screenshots/13.png)
+<img width="1911" height="276" alt="13" src="https://github.com/user-attachments/assets/64995af0-dcd8-4bd0-b06f-67fa4bbcb817" />
+
 
 ## Step 9: Test Pulling an Image from ECR
 After logging out, the image pull failed because Docker had no registry credentials. After logging in again, the image pull succeeded.
@@ -553,12 +566,14 @@ aws ecr get-login-password --region eu-north-1 --profile project3 | docker login
 docker pull 225874124228.dkr.ecr.eu-north-1.amazonaws.com/burhanuddin-private-registry:v1
 ```
 
-![14.png](Project-3/screenshots/14.png)
+<img width="1892" height="672" alt="14" src="https://github.com/user-attachments/assets/6c01e74f-c19c-44e8-9c46-3b3b858e32f9" />
+
 
 ## Step 10: Verify the Repository in AWS Console
 The AWS Console was used to inspect the repository and its image list.
 
-![15.png](Project-3/screenshots/15.png)
+<img width="1896" height="800" alt="15" src="https://github.com/user-attachments/assets/f32fd628-5321-4ce5-9e2b-b2529292df43" />
+
 
 ## Outcome
 - Prepared a Docker application and local Docker images.
