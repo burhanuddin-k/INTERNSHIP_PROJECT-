@@ -627,96 +627,74 @@ CloudWatch Logs
 ## Step 1: Launch the EC2 Instance
 Created an EC2 instance in the Stockholm region to simulate a high-CPU incident.
 
-**📸 Screenshot: project-4_1.png**
+<img width="1917" height="800" alt="project-4_1" src="https://github.com/user-attachments/assets/fdc57c00-51d8-4ffc-a0c8-1d6424400f03" />
 
-> Upload screenshot here.
 
 ## Step 2: Configure IAM Permissions
 Configured permissions for the Lambda function to request an EC2 reboot and write execution logs to CloudWatch.
 
-**📸 Screenshot: s.s.-2.png**
+<img width="1896" height="842" alt="s s -2" src="https://github.com/user-attachments/assets/425f2f6a-70e5-48cd-af5c-14a76ab5b2e3" />
 
-> Upload screenshot here.
 
-**📸 Screenshot: s.s.-3.png**
+<img width="1896" height="857" alt="s s -3" src="https://github.com/user-attachments/assets/6a85af9e-3375-4766-8324-2c2fd40c8de4" />
 
-> Upload screenshot here.
 
 ## Step 3: Create the Lambda Function
 Created `Project4-EC2-Auto-Remediation` to handle alarm events and request remediation for the EC2 instance.
+<img width="1912" height="807" alt="s s -4" src="https://github.com/user-attachments/assets/82387168-1444-4f42-9770-f099baae9765" />
 
-**📸 Screenshot: s.s.-4.png**
 
-> Upload screenshot here.
-
-**📸 Screenshot: s.s.-5.png**
-
-> Upload screenshot here.
+<img width="1900" height="850" alt="s s -5" src="https://github.com/user-attachments/assets/82c1b97a-4675-47b0-81d1-a259cec1867e" />
 
 ## Step 4: Configure the CPU Monitoring Alarm
 Created `Project4-High-CPU-Alarm` in Amazon CloudWatch to monitor the EC2 `CPUUtilization` metric and enter the ALARM state when the configured threshold is exceeded.
 
-**📸 Screenshot: s.s.-6.png**
+<img width="1901" height="852" alt="s s -6" src="https://github.com/user-attachments/assets/430d223b-404c-46be-824f-c3df28ce3393" />
 
-> Upload screenshot here.
 
-**📸 Screenshot: s.s.-7.png**
+<img width="1917" height="796" alt="s s -7" src="https://github.com/user-attachments/assets/678023da-a55b-467e-ae10-9fd236bf1e2c" />
 
-> Upload screenshot here.
 
 ## Step 5: Connect CloudWatch to Lambda Using EventBridge
 Created the `Project4-CPU-Alarm-Trigger` EventBridge rule to match the CloudWatch alarm state change and invoke the Lambda remediation function.
 
-**📸 Screenshot: s.s.-8.png**
+<img width="1905" height="856" alt="s s -8" src="https://github.com/user-attachments/assets/37bdfc6b-039b-4666-b5bd-4a26a1e35aa6" />
 
-> Upload screenshot here.
+<img width="1917" height="797" alt="s s -9" src="https://github.com/user-attachments/assets/6e9a06f9-a709-4678-b60c-4d636c1d0ac2" />
 
-**📸 Screenshot: s.s.-9.png**
-
-> Upload screenshot here.
 
 ## Step 6: Simulate a High-CPU Incident
 Generated CPU load on the EC2 instance to test the monitoring and automated response.
 
-**📸 Screenshot: s.s.-10.png**
+<img width="1030" height="135" alt="s s -10" src="https://github.com/user-attachments/assets/5fd24a14-65e6-4f0e-bf2e-095517fda1b6" />
 
-> Upload screenshot here.
 
 ## Step 7: Verify the CloudWatch Alarm
 Confirmed that the high CPU utilization caused the CloudWatch alarm to enter the ALARM state.
+<img width="1917" height="861" alt="s s -11" src="https://github.com/user-attachments/assets/9936cdee-17a0-40bc-987c-72dc82a98d03" />
 
-**📸 Screenshot: s.s.-11.png**
 
-> Upload screenshot here.
+<img width="1917" height="791" alt="s s -12" src="https://github.com/user-attachments/assets/20a1b4d4-b804-421d-a777-b888d299e352" />
 
-**📸 Screenshot: s.s.-12.png**
-
-> Upload screenshot here.
 
 ## Step 8: Verify Automatic Remediation
 Checked the Lambda execution and confirmed that the EC2 reboot request succeeded. This verified that the alarm-driven remediation workflow was triggered.
 
-**📸 Screenshot: s.s.-13.png**
+<img width="1917" height="800" alt="s s -13" src="https://github.com/user-attachments/assets/6b589059-0452-4569-bf94-64d16e662877" />
 
-> Upload screenshot here.
 
 ## Step 9: Check CloudWatch Logs
 Used CloudWatch Logs to review the Lambda execution and remediation result.
 
-**📸 Screenshot: s.s.-14.png**
+<img width="1912" height="851" alt="s s -14" src="https://github.com/user-attachments/assets/66051899-9fd3-4d06-b88c-b9d0d50586e2" />
 
-> Upload screenshot here.
-
-**📸 Screenshot: s.s.-15.png**
-
-> Upload screenshot here.
+<img width="1917" height="857" alt="s s -15" src="https://github.com/user-attachments/assets/5e831210-0b86-43a3-b45e-8d8c091be528" />
 
 ## Step 10: Stop Test Resources
 After testing, disabled the EventBridge rule, deleted the test alarm and stopped the EC2 instance to reduce ongoing resource usage. The Lambda function and its logs were retained.
 
-**📸 Screenshot: s.s.-16.png**
+<img width="1916" height="851" alt="s s -16" src="https://github.com/user-attachments/assets/1e464c29-c9df-43df-a513-6d6820ab6f8b" />
 
-> Upload screenshot here.
 
 ## Result
 - Configured CPU utilization monitoring for an EC2 instance.
