@@ -587,3 +587,99 @@ The AWS Console was used to inspect the repository and its image list.
 - Never commit AWS access keys, secret keys, session tokens, or local credential files.
 - Keep the `project3` AWS CLI profile configured locally.
 - Review IAM and repository permissions before using this setup outside a lab environment.
+
+
+---
+
+# Project 4: Automated Incident Response Using CloudWatch and Lambda
+
+## Overview
+In this project, I configured an automated incident response system on AWS. A CloudWatch alarm monitors EC2 CPU utilization. When the CPU threshold is exceeded, EventBridge routes the alarm event to a Lambda function, which requests an EC2 reboot. CloudWatch Logs records the remediation activity.
+
+## Project Details
+- **AWS Region:** `eu-north-1` (Stockholm)
+- **EC2 Instance ID:** `i-0889a4f101f973e4d`
+- **CloudWatch Alarm:** `Project4-High-CPU-Alarm`
+- **EventBridge Rule:** `Project4-CPU-Alarm-Trigger`
+- **Lambda Function:** `Project4-EC2-Auto-Remediation`
+- **CPU Threshold:** Above 70%
+
+## Incident Response Flow
+```text
+EC2 CPU Utilization Increases
+           |
+           v
+CloudWatch CPU Alarm (ALARM state)
+           |
+           v
+EventBridge Rule
+           |
+           v
+AWS Lambda Remediation
+           |
+           v
+EC2 Reboot Request
+           |
+           v
+CloudWatch Logs
+```
+
+## Step 1: Launch the EC2 Instance
+Created an EC2 instance in the Stockholm region to simulate a high-CPU incident.
+
+<!-- Screenshot: 01-ec2-instance.png -->
+
+## Step 2: Configure IAM Permissions
+Configured permissions for the Lambda function to request an EC2 reboot and write execution logs to CloudWatch.
+
+<!-- Screenshot: 02-iam-role.png -->
+
+## Step 3: Create the Lambda Function
+Created `Project4-EC2-Auto-Remediation` to handle alarm events and request remediation for the EC2 instance.
+
+<!-- Screenshot: 03-lambda-function.png -->
+
+## Step 4: Configure the CPU Monitoring Alarm
+Created `Project4-High-CPU-Alarm` in Amazon CloudWatch to monitor the EC2 `CPUUtilization` metric and enter the ALARM state when the configured threshold is exceeded.
+
+<!-- Screenshot: 05-cloudwatch-alarm-created.png -->
+
+## Step 5: Connect CloudWatch to Lambda Using EventBridge
+Created the `Project4-CPU-Alarm-Trigger` EventBridge rule to match the CloudWatch alarm state change and invoke the Lambda remediation function.
+
+<!-- Screenshot: 06-eventbridge-lambda-target.png -->
+
+## Step 6: Simulate a High-CPU Incident
+Generated CPU load on the EC2 instance to test the monitoring and automated response.
+
+<!-- Screenshot: 08-cpu-load-test.png -->
+
+## Step 7: Verify the CloudWatch Alarm
+Confirmed that the high CPU utilization caused the CloudWatch alarm to enter the ALARM state.
+
+<!-- Screenshot: 09-cloudwatch-alarm-triggered.png -->
+
+## Step 8: Verify Automatic Remediation
+Checked the Lambda execution and confirmed that the EC2 reboot request succeeded. This verified that the alarm-driven remediation workflow was triggered.
+
+<!-- Screenshot: 10-lambda-remediation-success.png -->
+
+## Step 9: Check CloudWatch Logs
+Used CloudWatch Logs to review the Lambda execution and remediation result.
+
+<!-- Screenshot: 11-cloudwatch-logs.png -->
+
+## Step 10: Stop Test Resources
+After testing, disabled the EventBridge rule, deleted the test alarm and stopped the EC2 instance to reduce ongoing resource usage. The Lambda function and its logs were retained.
+
+<!-- Screenshot: 12-resource-cleanup.png -->
+
+## Result
+- Configured CPU utilization monitoring for an EC2 instance.
+- Connected CloudWatch alarm events to AWS Lambda using EventBridge.
+- Triggered the alarm by generating CPU load.
+- Verified a successful EC2 reboot request from Lambda.
+- Reviewed remediation activity in CloudWatch Logs.
+
+## Conclusion
+I built and tested an automated incident response workflow using Amazon EC2, CloudWatch, EventBridge, Lambda and CloudWatch Logs. The system detects high CPU utilization and automatically requests EC2 remediation without requiring a manual reboot.
