@@ -726,17 +726,23 @@ Oracle VirtualBox, Ubuntu Server 24.04 LTS, Windows PowerShell/SSH, AWS CLI v2, 
 ### 1. Install VirtualBox and create Ubuntu VM
 Created `Project-5-Ubuntu-New` with 4 GB RAM, 2 CPUs, 25 GB disk and NAT networking.
 
-![VirtualBox installed](project-5_ss1.png)
-![VM creation](ss-2.png)
-![VM in VirtualBox](ss-3.png)
+<img width="1917" height="1020" alt="project-5_ss1" src="https://github.com/user-attachments/assets/8171d366-531b-42ea-8bec-4450160cfeb8" />
+
+<img width="1915" height="1012" alt="ss-2" src="https://github.com/user-attachments/assets/85b28c51-3702-4ba1-ab8d-bcc9189d1ce8" />
+
+<img width="710" height="825" alt="ss-3" src="https://github.com/user-attachments/assets/fdb41fd5-d99f-4056-90fe-077f6f61a563" />
+
 
 ### 2. Install Ubuntu Server
 Installed Ubuntu Server 24.04 LTS and verified that the VM booted.
 
-![VM running](ss-4.png)
-![Ubuntu installation](ss-7.png)
-![Ubuntu setup](ss-8.png)
-![Installation completed](ss-9.png)
+<img width="1916" height="1013" alt="ss-4" src="https://github.com/user-attachments/assets/caae1d29-cbda-4836-b413-6761dcd68f89" />
+
+<img width="1066" height="812" alt="ss-7" src="https://github.com/user-attachments/assets/8dbd2069-c361-415f-8acb-5dae03c77064" />
+
+<img width="1297" height="802" alt="ss-8" src="https://github.com/user-attachments/assets/5e48411c-c747-4e15-9e85-77927ca2f4f8" />
+
+<img width="1315" height="841" alt="ss-9" src="https://github.com/user-attachments/assets/63534524-c593-49c8-ac4f-7242634132fb" />
 
 ### 3. Prepare the server and SSH
 ```bash
@@ -756,8 +762,9 @@ ssh -p 2222 vboxuser@127.0.0.1
 ### 4. Configure AWS IAM
 Created IAM user `Project5-CloudWatch-User` with `CloudWatchAgentServerPolicy` and an access key for the on-premises host.
 
-![IAM permissions](ss-10.png)
-![IAM user created](ss-11.png)
+<img width="1910" height="845" alt="ss-10" src="https://github.com/user-attachments/assets/9e7b23f4-43d2-4696-a3a4-8351cec93e54" />
+
+<img width="1917" height="856" alt="ss-11" src="https://github.com/user-attachments/assets/e2f61597-7c68-4f23-8a92-a136e50a7f37" />
 
 **Security:** Do not upload access keys or credentials to GitHub.
 
@@ -772,8 +779,10 @@ aws sts get-caller-identity --profile project5
 ```
 Used AWS region `eu-north-1`.
 
-![AWS CLI installed](ss12.png)
-![AWS identity verified](ss-13.png)
+<img width="1395" height="193" alt="ss12" src="https://github.com/user-attachments/assets/3fd77900-b99c-4f41-b044-d7cfd57f9fc0" />
+
+<img width="1085" height="162" alt="ss-13" src="https://github.com/user-attachments/assets/393ba81f-716e-45fa-b5c5-96c38cf3280e" />
+
 
 ### 6. Install CloudWatch Agent
 ```bash
@@ -782,7 +791,8 @@ sudo dpkg -i amazon-cloudwatch-agent.deb
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a status
 ```
 
-![CloudWatch Agent installed](ss-14.png)
+<img width="1361" height="202" alt="ss-14" src="https://github.com/user-attachments/assets/78d1b6f7-8b45-47a2-878f-c7100d9b9b77" />
+
 
 ### 7. Configure monitoring
 ```bash
@@ -790,7 +800,8 @@ sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
 ```
 Selected Linux, **On-Premises**, host metrics, overall CPU (not per core), **60-second** collection, Basic configuration. Disabled StatsD, log collection, X-Ray, and SSM Parameter Store. Saved the configuration to `/opt/aws/amazon-cloudwatch-agent/bin/config.json` and configured the agent to use the `project5` credentials profile.
 
-![Agent configuration](16.png)
+<img width="1705" height="960" alt="16" src="https://github.com/user-attachments/assets/5e6b055d-7e3b-4a8b-a282-fbcbdbfb1e04" />
+
 
 ### 8. Start and verify agent
 ```bash
@@ -799,13 +810,15 @@ sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a status
 ```
 The agent reported `running` and `configured`.
 
-![Agent running](17.png)
+<img width="1912" height="737" alt="17" src="https://github.com/user-attachments/assets/a755f31a-3e5a-4f82-bc64-f02f72605fec" />
 
 ### 9. Verify CloudWatch metrics
 In **CloudWatch → Metrics → Classic metrics** (Stockholm), the **CWAgent** namespace displayed **29 metrics**. The `mem_used_percent` graph confirmed that metrics were reaching AWS.
 
-![CWAgent namespace](18.png)
-![Memory usage graph](19.png)
+<img width="1917" height="793" alt="18" src="https://github.com/user-attachments/assets/f3872a15-a2ea-4a83-9e8d-843033eb2bfd" />
+
+<img width="1917" height="852" alt="19" src="https://github.com/user-attachments/assets/b689650a-be81-4fe5-8c9c-a477372db3ed" />
+
 
 ## Results
 - On-premises Ubuntu Server successfully integrated with AWS CloudWatch.
